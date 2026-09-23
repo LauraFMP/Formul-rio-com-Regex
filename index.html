@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulário de Cadastro</title>
+</head>
+<body>
+  <h1>Formulário de Cadastro</h1>
+  <form action="#" method="post">
+    <fieldset>
+      <legend>Dados Pessoais</legend>
+
+      <label for="nomeCompleto">Nome Completo</label>
+      <input type="text" id="nomeCompleto" name="nomeCompleto" required>
+
+      <label for="matricula">Matrícula</label>
+      <input type="text" id="matricula" name="matricula" required>
+
+      <label for="dataNascimento">Data de Nascimento</label>
+      <input type="text" id="dataNascimento" name="dataNascimento" placeholder="DD/MM/AAAA" pattern="^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/\d{4}$" data-mask="date" required>
+      <div class="feedback" id="dataNascimentoFeedback" aria-live="polite"></div>
+
+      <label for="tipoSanguineo">Tipo Sanguíneo</label>
+      <input type="text" id="tipoSanguineo" name="tipoSanguineo" placeholder="Ex: O+" required>
+    </fieldset>
+
+    <fieldset>
+      <legend>Contatos</legend>
+
+      <label for="emailComum">E-mail comum</label>
+      <input type="email" id="emailComum" name="emailComum" required>
+
+      <label for="emailFMP">E-mail da FMP</label>
+      <input type="email" id="emailFMP" name="emailFMP" placeholder="nome.sobrenome@aluno.fmpsc.edu.br" required>
+
+      <label for="telefone">Telefone</label>
+      <input type="tel" id="telefone" name="telefone" placeholder="(XX)XXXXX-XXXX" pattern="^\(?\d{2}\)?\s?\d{4,5}-\d{4}$" data-mask="phone" required>
+      <div class="feedback" id="telefoneFeedback" aria-live="polite"></div>
+
+      <label for="endereco">Endereço</label>
+      <input type="text" id="endereco" name="endereco" required>
+
+      <label for="cep">CEP</label>
+      <input type="text" id="cep" name="cep" placeholder="00000-000" data-mask="cep" required>
+      <div class="feedback" id="cepFeedback" aria-live="polite"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Documentos</legend>
+
+      <label for="cpf">CPF</label>
+      <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" pattern="^\d{3}\.\d{3}\.\d{3}-\d{2}$" data-mask="cpf" required>
+      <div class="feedback" id="cpfFeedback" aria-live="polite"></div>
+
+      <label for="rg">RG</label>
+      <input type="text" id="rg" name="rg" placeholder="00.000.000-0" required>
+
+      <label for="cnpj">CNPJ</label>
+      <input type="text" id="cnpj" name="cnpj" placeholder="00.000.000/0000-00" required>
+
+      <label for="inscricaoEstadual">Inscrição Estadual</label>
+      <input type="text" id="inscricaoEstadual" name="inscricaoEstadual" required>
+    </fieldset>
+
+    <fieldset>
+      <legend>Dados Financeiros</legend>
+
+      <label for="numeroCartao">Número do Cartão</label>
+      <input type="text" id="numeroCartao" name="numeroCartao" placeholder="0000 0000 0000 0000" required>
+
+      <label for="validade">Validade</label>
+      <input type="month" id="validade" name="validade" required>
+
+      <label for="cvv">CVV</label>
+      <input type="text" id="cvv" name="cvv" pattern="^\d{3,4}$" placeholder="123" required>
+    </fieldset>
+
+    <fieldset>
+      <legend>Informações Adicionais</legend>
+
+      <label for="lotePescado">Regex para Lote de venda de peixes</label>
+      <input type="text" id="lotePescado" name="lotePescado" placeholder="AA1234" pattern="^[A-Z]{2}\d{4}$" required>
+
+      <label for="latitude">Latitude</label>
+      <input type="text" id="latitude" name="latitude" placeholder="-23.5505" required>
+
+      <label for="longitude">Longitude</label>
+      <input type="text" id="longitude" name="longitude" placeholder="-46.6333" required>
+
+      <label for="codigoBarras">Código de Barras</label>
+      <input type="text" id="codigoBarras" name="codigoBarras" required>
+
+      <label for="placaMercosul">Placa de carro Mercosul</label>
+      <input type="text" id="placaMercosul" name="placaMercosul" placeholder="ABC1D23" pattern="^[A-Z]{3}\d[A-Z]\d{2}$" required>
+    </fieldset>
+
+    <button type="submit">Enviar</button>
+  </form>
+
+  <script>
+  (function(){
+  const masks = {
+    date: {
+      max:8,
+      formatter: function(digs){
+        digs = digs.slice(0,8);
+        if(digs.length<=2) return digs;
+        if(digs.length<=4) return digs.slice(0,2)+'/'+digs.slice(2);
+        return digs.slice(0,2)+'/'+digs.slice(2,4)+'/'+digs.slice(4,8);
+      },
+      validator: /^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/,
+      message: 'Formato: DD/MM/AAAA'
+    },
+    cpf: {
+      max:11,
+      formatter: function(d){
+        d=d.slice(0,11);
+        let p1=d.slice(0,3), p2=d.slice(3,6), p3=d.slice(6,9), p4=d.slice(9,11);
+        let out=''; if(p1) out+=p1; if(p2) out+='.'+p2; if(p3) out+='.'+p3; if(p4) out+='-'+p4; return out;
+      },
+      validator: /^\d{3}\.\d{3}\.\d{3}-\d{2}$/,
+      message:'Formato: 000.000.000-00'
+    },
+    phone: {
+      max:11,
+      formatter: function(d){
+        d=d.slice(0,11);
+        if(d.length<=2) return '('+d;
+        let area=d.slice(0,2), rest=d.slice(2);
+        if(rest.length<=4) return '('+area+') '+rest;
+        if(d.length<=10) return '('+area+') '+rest.slice(0,4)+'-'+rest.slice(4);
+        return '('+area+') '+rest.slice(0,5)+'-'+rest.slice(5);
+      },
+      validator: /^\(?\d{2}\)?\s?\d{4,5}-\d{4}$/,
+      message:'Formato: (DD) 99999-9999 ou (DD) 9999-9999'
+    },
+    cep: {
+      max:8,
+      formatter: function(d){ d=d.slice(0,8); if(d.length<=5) return d; return d.slice(0,5)+'-'+d.slice(5); },
+      validator: /^\d{5}-\d{3}$/,
+      message:'Formato: 00000-000'
+    }
+  };
+
+  function onlyDigits(s){ return s.replace(/\D/g,''); }
+
+  function digitIndexFromCaret(value, caret){
+    let count=0;
+    for(let i=0;i<caret && i<value.length;i++) if(/\d/.test(value[i])) count++;
+    return count;
+  }
+
+  function caretFromDigitIndex(formatted, digitIndex){
+    if(digitIndex<=0) return 0;
+    let count=0;
+    for(let i=0;i<formatted.length;i++){
+      if(/\d/.test(formatted[i])) count++;
+      if(count===digitIndex) return i+1;
+    }
+    return formatted.length;
+  }
+
+  function attachMask(el, config){
+    const feedback = document.getElementById(el.id + 'Feedback');
+    el.dataset.raw = el.value ? onlyDigits(el.value) : '';
+    el.addEventListener('keydown', function(e){
+      const ctrlKeys = ['Backspace','ArrowLeft','ArrowRight','Delete','Tab','Home','End'];
+      if(ctrlKeys.indexOf(e.key)!==-1) return;
+      if(!/\d/.test(e.key)) e.preventDefault();
+    });
+
+    el.addEventListener('paste', function(e){
+      e.preventDefault();
+      const paste = (e.clipboardData || window.clipboardData).getData('text');
+      const digits = onlyDigits(paste);
+      const start = el.selectionStart;
+      const digitPos = digitIndexFromCaret(el.value, start);
+      const currentDigits = onlyDigits(el.value);
+      const before = currentDigits.slice(0,digitPos);
+      const after = currentDigits.slice(digitPos);
+      const combined = (before + digits + after).slice(0, config.max);
+      const formatted = config.formatter(combined);
+      el.value = formatted; el.dataset.raw = combined;
+      updateFeedback(feedback, config.validator.test(formatted), config.message);
+      const newCaret = caretFromDigitIndex(formatted, before.length + digits.length);
+      setTimeout(()=>{ el.setSelectionRange(newCaret,newCaret); },0);
+    });
+
+    el.addEventListener('input', function(e){
+      const prevCaret = el.selectionStart;
+      const prevDigitsBeforeCaret = digitIndexFromCaret(el.value, prevCaret);
+      const digits = onlyDigits(el.value).slice(0,config.max);
+      const formatted = config.formatter(digits);
+      el.value = formatted; el.dataset.raw = digits;
+      const newCaret = caretFromDigitIndex(formatted, prevDigitsBeforeCaret);
+      el.setSelectionRange(newCaret,newCaret);
+      updateFeedback(feedback, config.validator.test(formatted), config.message);
+    });
+
+    updateFeedback(feedback, config.validator.test(el.value), config.message);
+  }
+
+  function updateFeedback(el, valid, message){ if(!el) return; if(valid){ el.textContent='OK'; el.classList.remove('invalid'); el.classList.add('valid'); } else { el.textContent=message; el.classList.remove('valid'); el.classList.add('invalid'); }}
+
+  document.addEventListener('DOMContentLoaded', function(){
+    ['dataNascimento','cpf','telefone','cep'].forEach(id=>{
+      const el = document.getElementById(id);
+      if(el && el.dataset.mask && masks[el.dataset.mask]) attachMask(el, masks[el.dataset.mask]);
+    });
+  });
+  })();
+  </script>
+
+  <!-- Submission modal (final feedback) -->
+  <div id="submitModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true" hidden>
+    <div class="modal-backdrop"></div>
+    <div class="modal-content" role="document">
+      <h2 id="modalTitle">Formulário enviado</h2>
+      <p id="modalMessage">Seu formulário foi salvo e enviado com sucesso.</p>
+      <div class="modal-actions">
+        <button id="modalOk" type="button">Ok</button>
+        <button id="modalRefill" type="button">Preencher novamente</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    const form = document.querySelector('form');
+    const modal = document.getElementById('submitModal');
+    const btnOk = document.getElementById('modalOk');
+    const btnRefill = document.getElementById('modalRefill');
+    let lastFocus = null;
+
+    function openModal(){
+      lastFocus = document.activeElement;
+      modal.hidden = false; modal.removeAttribute('aria-hidden');
+      // move focus to Ok button
+      btnOk.focus();
+    }
+
+    function closeModal(){
+      modal.hidden = true; modal.setAttribute('aria-hidden','true');
+      if(lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+    }
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      // Let browser do final constraint validation first
+      const invalid = form.querySelector(':invalid');
+      if(invalid){ invalid.focus(); return; }
+      // Show final confirmation modal
+      openModal();
+    });
+
+    btnOk.addEventListener('click', function(){
+      closeModal();
+    });
+
+    btnRefill.addEventListener('click', function(){
+      // Reset the form and clear masked raw values & feedback
+      form.reset();
+      ['dataNascimento','cpf','telefone','cep'].forEach(id=>{
+        const el = document.getElementById(id);
+        if(!el) return;
+        el.value = '';
+        el.dataset.raw = '';
+        const fb = document.getElementById(id+'Feedback');
+        if(fb){ fb.textContent = ''; fb.classList.remove('valid','invalid'); }
+      });
+      closeModal();
+      const first = document.getElementById('nomeCompleto'); if(first) first.focus();
+    });
+
+    // allow closing modal with Escape
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !modal.hidden) closeModal(); });
+  })();
+  </script>
+
+  <style>
+  .feedback{font-size:0.9em;margin:4px 0;color:#b00}
+  .feedback.valid{color:#0a0}
+  .feedback.invalid{color:#b00}
+  input{padding:6px;margin:4px 0;display:block}
+
+  /* Modal styles */
+  .modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:2000}
+  .modal[hidden]{display:none}
+  .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.5)}
+  .modal-content{position:relative;background:#fff;padding:20px;border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,0.2);max-width:420px;width:90%;z-index:2001}
+  .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+  .modal-actions button{padding:8px 12px;cursor:pointer}
+  </style>
+
+</body>
+</html>
