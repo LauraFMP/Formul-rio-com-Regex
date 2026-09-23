@@ -37,7 +37,7 @@ Projeto desenvolvido em **HTML, CSS e JavaScript** com o objetivo de criar um fo
 1. Clone este repositório:
 
 ```bash
-git clone URL_DO_REPOSITORIO
+git clone [URL_DO_REPOSITORIO](https://github.com/LauraFMP/Formul-rio-com-Regex)
 ```
 
 2. Abra a pasta do projeto.
